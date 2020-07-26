@@ -1,1 +1,4 @@
-def check_user(A=)
+def check_user()
+    pass
+
+print(ss)
