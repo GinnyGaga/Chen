@@ -67,6 +67,8 @@ class Game(object):
     #     return param1, "参数2", "参数3", 1
 
 
+
+
 if __name__ == "__main__":
     # test = Game()
     # test.population_recommend_list(offset=10)
