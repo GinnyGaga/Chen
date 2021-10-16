@@ -1,4 +1,4 @@
-from model import user
+from model import user, user_address, test_join
 
 
 def test1():
@@ -45,9 +45,44 @@ def test5():
         print(u.id, u.name, u.phone)
 
 
+def test6():
+    res = user_address.get_by_id(1)
+    print(res.id, res.name, res.address)
+
+
+# 2表联查
+def test7():
+    res = test_join.get_user_addr()
+    print(res)
+    for v in res:
+        u = v["User"]
+        addr = v["UserAddress"]
+        print(u.id, u.name, addr.address)
+
+
+# 3表联查
+def test8():
+    res = test_join.get_user_addr_sex()
+    print(res)
+    for (user, addr, sex) in res:
+        # user, addr, sex = v["User"], v["UserAddress"], v["UserSex"]
+        print(user.name, addr.address, sex.sex)
+
+
+# 3表联查带条件
+def test9():
+    res = test_join.get_user_addr_sex_by_addr("NN")
+    print(res)
+    for (user, addr, sex) in res:
+        # user, addr, sex = v["User"], v["UserAddress"], v["UserSex"]
+        print(user.name, addr.address, sex.sex)
+
+
 if __name__ == '__main__':
     # test1()
     # test2()
     # test3()
     # test4()
-    test5()
+    # test7()
+    # test8()
+    test9()
