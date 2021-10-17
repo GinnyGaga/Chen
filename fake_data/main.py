@@ -16,8 +16,8 @@ def test2():
 def test3():
     array = []
 
-    for i in range(1, 1101):
-        array.append(user.User(name='测试用户%d' % i, phone='1234567890%d' % i))
+    for i in range(1, 1101):  # 左闭右开，插入1100条数据0
+        array.append(user.User(name='测试用户%d' % i, phone='1234567890%d' % i))  # id 自动递增
         if i % 200 == 0:  # 每200条数据拼装成1条SQL语句插入后，清除列表中已经插入的数据
             print(i)
             user.batch_create(array)
@@ -29,14 +29,14 @@ def test3():
 
 
 def test4():
-    res = user.update_by_id(1, "更新11")
+    res = user.update_by_id(1, "更新22311")
     print(res)
-    res = user.update_by_id(2, "更新12", "1234")
-    print(res)
-    res = user.update_by_id(3, phone="3456")
-    print(res)
-    res = user.update_by_id(4)
-    print(res)
+    # res = user.update_by_id(2, "更新122", "123114")
+    # print(res)
+    # res = user.update_by_id(5, phone="3456ee")
+    # print(res)
+    # res = user.update_by_id(4)
+    # print(res)
 
 
 def test5():
@@ -62,11 +62,13 @@ def test7():
 
 # 3表联查
 def test8():
-    res = test_join.get_user_addr_sex()
-    print(res)
+    res = test_join.list_user_addr_sex()
+    print(res)  # 返回值为列表，即返回列表为3个元组，每个元组含有3张表。
     for (user, addr, sex) in res:
-        # user, addr, sex = v["User"], v["UserAddress"], v["UserSex"]
         print(user.name, addr.address, sex.sex)
+    # for v in res:
+    #     user, addr, sex = v["User"], v["UserAddress"], v["UserSex"]
+    #     print(user.name, addr.address, sex.sex)
 
 
 # 3表联查带条件
@@ -78,6 +80,21 @@ def test9():
         print(user.name, addr.address, sex.sex)
 
 
+# 3表联查带条件
+def test10():
+    # 法1：报错的话，打断点，看data和fileds字段
+    # user, addr, sex = test_join.get_user_addr_sex()
+    # print(user.name, addr.address, sex.sex)
+    # 法2：
+    # res = test_join.get_user_addr_sex()
+    # print(res)
+    # print(res.User.name, res.UserAddress.address, res.UserSex.sex)
+    # 法3：
+    res = test_join.get_user_addr_sex()
+    print(res)
+    print(res[0].name, res[1].address, res[2].sex)
+
+
 if __name__ == '__main__':
     # test1()
     # test2()
@@ -85,4 +102,5 @@ if __name__ == '__main__':
     # test4()
     # test7()
     # test8()
-    test9()
+    # test9()
+    test10()

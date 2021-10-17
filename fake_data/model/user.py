@@ -43,18 +43,18 @@ def batch_create(records: list):
 # 更新
 def update_by_id(user_id: int, name=None, phone=None):
     update_fields = {}  # update对象为字典
-    if name is not None:  # 若name没有更新，则把原来的name值传给name
+    if name is not None:  # 若name有更新，name不为None,则把原来的name参数值传到字典里
         update_fields["name"] = name
-    if phone is not None:
+    if phone is not None:  # 若phone有更新，phone不为None,则把原来的phone参数值传到字典里
         update_fields["phone"] = phone
 
-    if len(update_fields) > 0:
+    if len(update_fields) > 0:  # 若更新，则update_fields有内容，继续下面的操作。
         session = DbEngine().get_session()
         try:
             effect_num = session.query(User).filter_by(id=user_id).update(update_fields)
-            return effect_num, session.commit()
+            return effect_num, session.commit()  # 返回更新的行数和None表示
         except Exception as e:
             print(e)
             return 0, session.rollback()
 
-    return 0, None
+    return 0, None  # 若没有更新，即不传参，则返回0和None
