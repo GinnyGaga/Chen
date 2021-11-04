@@ -1,4 +1,6 @@
-from model import user, user_address, test_join
+import json
+
+from model import user, user_address, test_join, ginny
 
 
 def test1():
@@ -17,7 +19,7 @@ def test3():
     array = []
 
     for i in range(1, 1101):  # 左闭右开，插入1100条数据0
-        array.append(user.User(name='测试用户%d' % i, phone='1234567890%d' % i))  # id 自动递增
+        array.append(user.User(name='测试用户%d' % i, phone='1234567890%d' % i))  # id 自动递增，把数据插入列表中
         if i % 200 == 0:  # 每200条数据拼装成1条SQL语句插入后，清除列表中已经插入的数据
             print(i)
             user.batch_create(array)
@@ -29,7 +31,7 @@ def test3():
 
 
 def test4():
-    res = user.update_by_id(1, "更新22311")
+    res = user.update_by_id(1, "更2311")
     print(res)
     # res = user.update_by_id(2, "更新122", "123114")
     # print(res)
@@ -95,6 +97,53 @@ def test10():
     print(res[0].name, res[1].address, res[2].sex)
 
 
+# 查找ginny表记录中不同的项
+# 1、把data的key value值单独表示，字典和id\type放在一个class绑定，初始化；
+# 2、判断ginny表是否为空值或者字符长度为0，则返回无
+# 3、赋值
+# 2、遍历查找data1是否在data2里，如不在，取出；
+# 3、遍历查找data2是否在data1里，如不在，取出；
+# 打印全部取出的全部数据
+
+def test12():
+    class TmpRecord:
+        record = None
+        data_k = ""
+        data_v = ""
+
+        def __init__(self, record, data_k, data_v):
+            self.record = record  # record表示表中每一行的字段
+            self.data_k = data_k  # data_k表示表中每一行字段里data字段的key值。
+            self.data_v = data_v
+
+    try:
+        res = ginny.Ginny().get_list()  # 调试发现res为list，res[0]为第一行数据，res[1]为第二行数据
+        if res is None or len(res) == 0:
+            return
+
+        record1, record2 = res[0], res[1]
+        dict1 = json.loads(record1.data)  # 把json string转换成json对象
+        dict2 = json.loads(record2.data)
+        if dict1 is None or dict2 is None:
+            return
+
+        out_put_list = []
+        for k, v in dict1.items():
+            if k not in dict2:
+                out_put_list.append(TmpRecord(record1, k, v))
+        for k, v in dict2.items():
+            if k not in dict1:
+                out_put_list.append(TmpRecord(record2, k, v))
+
+        for data in out_put_list:
+            # 遍历列表，每个data代表输出的一行数据结果，结果包含record和record里的data字典kv(kv已经用data_k和data_v表示)
+            print("id: %d, type: %d, data_k: %s, data_v: %s" %
+                  (data.record.id, data.record.type, data.data_k, data.data_v))
+
+    except Exception as e:
+        print(e)
+
+
 if __name__ == '__main__':
     # test1()
     # test2()
@@ -103,4 +152,6 @@ if __name__ == '__main__':
     # test7()
     # test8()
     # test9()
-    test10()
+    # test10()
+    # test11()
+    test12()

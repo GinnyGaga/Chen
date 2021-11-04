@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # '数据库类型+数据库驱动名称://用户名:口令@机器地址:端口号/数据库名'
-DATABASE_URL = 'mysql+pymysql://root:123456@localhost:3306/test02'
+# DATABASE_URL = 'mysql+pymysql://root:123456@localhost:3306/test02'
+DATABASE_URL = 'mysql+pymysql://root:123456@localhost:3306/test03-if'
 
 # 创建表模型对象的基类，SQLORM基类:
 Base = declarative_base()
